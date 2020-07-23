@@ -2,7 +2,7 @@ import React from 'react'
 import Total from './Total'
 
 export default function PizzaForm(props) {
-    const { handler, toppings, gluten, values, submit, disabled } = props
+    const { handler, toppings, gluten, values, submit, disabled, errors } = props
 
     return (
         <div>
@@ -78,6 +78,11 @@ export default function PizzaForm(props) {
                 </div>
                 <Total disabled={disabled} value={values.quantity} handler={handler} />
             </form>
+            <div>
+                {errors.name.length > 0 && <p>{errors.name}</p>}
+                {errors.sauce.length > 0 && <p>{errors.sauce}</p>}
+                {errors.quantity.length > 0 && <p>{errors.quantity}</p>}
+            </div>
         </div>
     )
 }

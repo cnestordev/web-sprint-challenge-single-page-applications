@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Route, Link, Switch } from 'react-router-dom'
 import formSchema from './formSchema'
 import * as yup from 'yup'
+import axios from 'axios'
 
 import Nav from './components/Navbar'
 import Banner from './components/Banner'
 import Body from './components/Body'
 import PizzaForm from './components/PizzaForm'
+import Confirm from './components/Confirm'
 
 const App = () => {
 
@@ -42,6 +44,7 @@ const App = () => {
   const [pizza, setPizza] = useState(initialState)
   const [errors, setErrors] = useState(errorMessages)
   const [disabled, setDisabled] = useState(true)
+  const [content, setContent] = useState([])
 
   useEffect(() => {
     formSchema.isValid(pizza).then(valid => {
@@ -98,7 +101,14 @@ const App = () => {
 
   const submitForm = e => {
     e.preventDefault()
-    console.log(pizza)
+    axios.post('https://reqres.in/api/users', pizza)
+      .then(res => {
+        setContent([res.data])
+      })
+  }
+
+  if (content.length > 0) {
+    return <Confirm content={content[0]} />
   }
 
 
@@ -119,6 +129,8 @@ const App = () => {
             toppings={updateToppings}
             handler={updatePizza}
             disabled={disabled}
+            errors={errors
+            }
           />
         </Route>
 
